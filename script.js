@@ -1,26 +1,22 @@
-// console.log(document.getElementById('getQuestion'))
+const generateQuestion = document.getElementById('generate-question');
+const questionContainer = document.getElementById('question-container');
 
-document.getElementById('getQuestion').addEventListener('click', () => {
-    // console.log('Button clicked!')
-    fetch('http://127.0.0.1:4001/questions/random-one')
-        .then (response => {
-            // console.log('Checking...')
-            if (!response.ok) {
-                throw new Error ('Server reloading. Try again!' + response.statusText);
-            }
-            // console.log(response);
-            // console.log(typeof response)
-            return response.json();
-        })
-        .then (data => {
-            // display the question
-            console.log(data);
-            document.getElementById('question').textContent = data.question;
-        })
-        .catch (error => {
-            console.log(`Error: ${error.message}`)
-            // alert('Server is down. Refresh the webpage and try again later.')
-        })
+currentQuestion = null;
+
+generateQuestion.addEventListener('click', async () => {
+    // console.log('clicked')
+    const response = await fetch('http://127.0.0.1:4001/questions/random-one');
+    const data = await response.json();
+    currentQuestion = data;
+    // console.log(currentQuestion);
+
+    questionContainer.textContent = '';
+
+    // TODO: Display the currentQuestion to web page
+    const questionText = document.createElement('p');
+    questionText.textContent = data.question;
+
+
+    questionContainer.appendChild(questionText);
+
 })
-
-// TODO: Display the answer after user clicked the button "Submit Answer"
