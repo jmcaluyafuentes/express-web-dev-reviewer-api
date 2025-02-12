@@ -1,0 +1,63 @@
+const generateButton = document.getElementById('review__question-btn');
+const submitButton = document.getElementById('review__submit-btn');
+const questionContainer = document.getElementById('review__question');
+const resultContainer = document.getElementById('review__result');
+
+let currentQuestion = null;
+
+generateButton.addEventListener('click', async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:4001/questions/random-one');
+        const data = await response.json();
+        currentQuestion = data;
+
+        questionContainer.textContent = '';
+
+        const questionText = document.createElement('p');
+        questionText.textContent = data.question;
+        questionContainer.appendChild(questionText);
+
+        data.choices.forEach((choice, index) => {
+            const choiceContainer = document.createElement('div');
+                    
+                const choiceInput = document.createElement('input');
+                choiceInput.type = 'radio';
+                choiceInput.name = 'choice';
+                choiceInput.value = choice;
+                choiceInput.id = `choice${index}`;
+
+                const choiceLabel = document.createElement('label');
+                choiceLabel.htmlFor = `choice${index}`;
+                choiceLabel.textContent = choice;
+
+                choiceContainer.appendChild(choiceInput);
+                choiceContainer.appendChild(choiceLabel);
+                choiceContainer.classList.add('radio-choice');
+
+                questionContainer.appendChild(choiceContainer);
+
+        submitButton.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
+        });
+    } catch (error) {
+        console.error('Error fetching question:', error);
+    }
+});
+
+submitButton.addEventListener('click', () => {
+    if (currentQuestion) {
+        let userAnswer = null;
+        if (currentQuestion.choices && currentQuestion.choices.length > 0) {
+            // Get selected radio button value
+            const selectedOption = document.querySelector('input[name="choice"]:checked');
+            userAnswer = selectedOption ? selectedOption.value : null;
+        } else {
+            // Get value from text input
+            userAnswer = document.querySelector('.input-text')?.value.trim();
+        }
+        const correctAnswer = currentQuestion.answer;
+        
+        resultContainer.innerHTML = `<p>${userAnswer === correctAnswer ? 'Correct!' : `Incorrect. The correct answer is: ${correctAnswer}`}</p>`;
+        resultContainer.classList.remove('hidden');
+    }
+});

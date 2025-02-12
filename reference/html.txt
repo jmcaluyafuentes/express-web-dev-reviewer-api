@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Dev Review</title>
+    <link rel="stylesheet" href="style.css">
+    <script async defer src="script.js"></script>
+</head>
+<body>
+    <div class="review">
+        <h1>Web Dev Review</h1>
+        <button id="review__question-btn">Generate Random Question</button>
+        <div id="review__question" class="review__question">
+            <!-- Question and choices will be inserted here -->
+        </div>
+        <button id="review__submit-btn" class="hidden">Submit Answer</button>
+        <div id="review__result" class="review__result hidden">
+            <!-- Result will be shown here -->
+        </div>
+    </div>
+</body>
+</html>
